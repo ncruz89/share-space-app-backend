@@ -11,17 +11,18 @@ const {
 
 const router = express.Router();
 
-router.get("/", getUsers);
+router.get("/", getUsers); // getUsers endpoint
 router.post(
+  // createUser endpoint
   "/signup",
-  fileUpload.single("image"),
+  fileUpload.single("image"), // file processor for image
   [
-    check("username").not().isEmpty(),
+    check("username").not().isEmpty(), // further backend validation
     check("password").isLength({ min: 6 }),
     check("email").normalizeEmail().isEmail(),
   ],
   createUser
 );
-router.post("/login", loginUser);
+router.post("/login", loginUser); // loginUser endpoint
 
 module.exports = router;

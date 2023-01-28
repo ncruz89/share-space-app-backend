@@ -5,6 +5,10 @@ const jwt = require("jsonwebtoken");
 const HttpError = require("./../models/http-error.js");
 const User = require("../models/user");
 
+// getUsers endpoint handler
+// calls to mongoDB to return all Users found excludes password from user object
+// res object sends back users object
+// map over users to generate ID string based off of mongoDB objectID
 const getUsers = async (req, res, next) => {
   let users;
   try {
@@ -17,6 +21,12 @@ const getUsers = async (req, res, next) => {
   res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
+// createUser endpoint handler
+// ensures data validation is checked and catches errors from create user route
+// checks if user already exists
+// if not, creates new User instance with hashed password
+// if user creation successful, creates 1hr duration token
+// res sends json object back to client with userId, username and token
 const createUser = async (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty())
@@ -82,6 +92,11 @@ const createUser = async (req, res, next) => {
     .json({ userId: newUser.id, username: newUser.username, token });
 };
 
+// loginUser endpoint handler
+// attempts to find user in database
+// returns error if user doesn't exist or password is wrong
+// generates new token
+// res sends json object back to client with userId, username and token
 const loginUser = async (req, res, next) => {
   const { username, password } = req.body;
 

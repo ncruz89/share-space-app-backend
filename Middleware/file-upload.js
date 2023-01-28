@@ -1,4 +1,4 @@
-const multer = require("multer");
+const multer = require("multer"); // 3rd party middleware library to help process uploaded image files
 const uuid = require("uuid").v1;
 
 const MIME_TYPE_MAP = {
@@ -7,6 +7,11 @@ const MIME_TYPE_MAP = {
   "image/jpg": "jpg",
 };
 
+// file upload multer instance
+// limits file size
+// sets file destination on local server
+// creates a random id for file name and adds proper extension
+// filters what file types can be uploaded
 const fileUpload = multer({
   limits: 500000,
   storage: multer.diskStorage({

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Place Schema
 const placeSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
@@ -9,7 +10,7 @@ const placeSchema = new mongoose.Schema({
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },
   },
-  creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+  creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" }, // establishes relationship with user schema...only one User relationship per place
 });
 
 module.exports = mongoose.model("Place", placeSchema);

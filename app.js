@@ -26,8 +26,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/places", placesRoutes); // => /api/places/...
-app.use("/api/users", userRoutes);
+app.use("/api/places", placesRoutes); // place routes
+app.use("/api/users", userRoutes); // user routes
 
 //middleware to handle returning static images
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
@@ -52,6 +52,7 @@ app.use((error, req, res, next) => {
     .json({ message: error.message || "An unknown error has occured." });
 });
 
+// mongoose database and server port connection
 mongoose
   .connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.jutxonr.mongodb.net/${process.env.DB_NAME}`

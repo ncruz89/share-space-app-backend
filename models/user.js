@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
+// User Schema
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -25,6 +26,7 @@ const userSchema = new mongoose.Schema({
   places: [{ type: mongoose.Types.ObjectId, required: true, ref: "Place" }],
 });
 
-userSchema.plugin(uniqueValidator);
+userSchema.plugin(uniqueValidator); // 3rd party unique validator library. Utilizes mongooses unique property to ensure no duplicates can be created
+// mongooses unique property only creates an internal index to help query efficiency
 
 module.exports = mongoose.model("User", userSchema);

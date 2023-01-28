@@ -8,6 +8,13 @@ const User = require("../models/user");
 
 const HttpError = require("./../models/http-error.js");
 
+// create place endpoint handler
+// ensures route validators don't return errors
+// retrieves coordinates using getCoordsForAddress method
+// creates new Place instance
+// finds user who created place in db
+// creates new transaction to create newPlace document and also add place to User document place property
+// res sends json object containing newly created place object
 const createPlace = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty())
@@ -58,6 +65,10 @@ const createPlace = async (req, res, next) => {
   res.status(201).json({ place: newPlace });
 };
 
+// get Place By Id endpoint handler
+// retrieves placeId from URL parameters
+// attempts to find place by id in db
+// res sends json object containing place object
 const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
   let place;
@@ -77,6 +88,10 @@ const getPlaceById = async (req, res, next) => {
   res.json({ place: place.toObject({ getters: true }) });
 };
 
+// get Places By User Id endpoint handler
+// retrieves userId from URL parameters
+// attempts to retrieve user places from db
+// res sends json object containing userPlaces array
 const getPlacesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
 
@@ -98,6 +113,13 @@ const getPlacesByUserId = async (req, res, next) => {
   });
 };
 
+// update place by id endpoint handler
+// ensures route validators don't return errors
+// retrieves placeId from URL parameters
+// attempts to find place in db
+// checks if place creator matches userId of user in req object
+// updates place title and descriptions and saves in db
+// res sends json object to client containing updatedPlace object
 const updatePlaceById = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty())
@@ -135,6 +157,13 @@ const updatePlaceById = async (req, res, next) => {
   res.status(200).json({ updatedPlace: place.toObject({ getters: true }) });
 };
 
+// delete place by id endpoint handler
+// retrieves placeId from URL parameters
+// attempts to find place by id in db and adds place object with creator id property
+// populate("creator") only works in this instance since the relationship is established in the place model
+// starts new transaction and attempts to delete place and also remove place object in User's places array
+// unlinks/removes image link to local upload folder
+// res sends json object to client containing message
 const deletePlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
 
